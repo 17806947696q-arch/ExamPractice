@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>期末刷题助手 - ExamPractice</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- 顶部标题栏 -->
+    <header class="app-header">
+      <h1>📚 期末刷题助手</h1>
+      <p class="subtitle">信息系统分析与设计 · 题库练习</p>
+    </header>
+
+    <!-- 统计信息栏 -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span class="stat-label">📋 进度</span>
+        <span class="stat-value" id="progress">0 / 0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">✅ 正确率</span>
+        <span class="stat-value" id="accuracy">0%</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">📝 错题数</span>
+        <span class="stat-value" id="wrongCount">0</span>
+      </div>
+    </div>
+
+    <!-- 模式选择按钮 -->
+    <div class="mode-bar">
+      <button class="mode-btn active" data-mode="sequential" id="btnSequential">
+        📖 顺序刷题
+      </button>
+      <button class="mode-btn" data-mode="random" id="btnRandom">
+        🎲 随机刷题
+      </button>
+      <button class="mode-btn" data-mode="wrong" id="btnWrong">
+        📝 错题练习
+      </button>
+      <button class="mode-btn btn-clear" id="btnClearWrong">
+        🗑️ 清空错题
+      </button>
+    </div>
+
+    <!-- 题目卡片 -->
+    <div class="question-card" id="questionCard">
+      <div class="card-header">
+        <span class="question-type" id="questionType">单选题</span>
+        <span class="question-number" id="questionNumber">第 1 题</span>
+      </div>
+      <div class="card-body">
+        <p class="question-text" id="questionText">题目加载中...</p>
+        <div class="options-list" id="optionsList"></div>
+      </div>
+      <div class="card-footer" id="cardFooter" style="display:none;">
+        <div class="result-area" id="resultArea"></div>
+        <div class="analysis-area" id="analysisArea"></div>
+      </div>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="action-bar">
+      <button class="action-btn btn-prev" id="btnPrev" disabled>
+        ⬅ 上一题
+      </button>
+      <button class="action-btn btn-submit" id="btnSubmit">
+        ✍️ 提交答案
+      </button>
+      <button class="action-btn btn-next" id="btnNext">
+        下一题 ➡
+      </button>
+    </div>
+
+    <!-- 完成提示 -->
+    <div class="finish-panel" id="finishPanel" style="display:none;">
+      <h2>🎉 恭喜完成！</h2>
+      <p>你已完成本轮所有题目。</p>
+      <div class="finish-stats">
+        <div><span>总题数：</span><span id="finishTotal">0</span></div>
+        <div><span>正确：</span><span id="finishCorrect">0</span></div>
+        <div><span>正确率：</span><span id="finishAccuracy">0%</span></div>
+      </div>
+      <button class="action-btn btn-submit" onclick="location.reload()">
+        🔄 重新开始
+      </button>
+    </div>
+
+  </div>
+
+  <!-- 题库数据：直接嵌入，确保 file:// 协议下也能运行 -->
+  <script src="questions_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
