@@ -123,6 +123,12 @@ body {
 .fill-input.input-correct { border-color: #00b894; background: #e6fff8; color: #00856a; }
 .fill-input.input-wrong { border-color: #ff6b6b; background: #fff0f0; color: #cc3333; }
 
+/* 错题等级徽章 */
+.wrong-badge { font-size: 12px; padding: 2px 8px; border-radius: 10px; margin-left: 6px; font-weight: 600; }
+.wrong-badge.level-high { background: #ffe0e0; color: #cc0000; border: 1px solid #ff6b6b; }
+.wrong-badge.level-mid { background: #fff3d0; color: #cc7700; border: 1px solid #ffb347; }
+.wrong-badge.level-low { background: #e0ffe0; color: #008800; border: 1px solid #4caf50; }
+
 .btn-clear:hover {
   background: #ff6b6b;
   color: #fff;
