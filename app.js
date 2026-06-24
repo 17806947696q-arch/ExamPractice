@@ -234,8 +234,11 @@ function skipToWrong(){
 // ========== 题目导航面板 ==========
 function toggleNavPanel(){
   const panel=$('#navPanel');
-  if(panel.style.display==='none'||!panel.style.display){panel.style.display='';renderNavGrid()}
-  else{panel.style.display='none'}
+  if(panel.style.display==='none'){
+    panel.style.display='';renderNavGrid();
+  }else{
+    panel.style.display='none';
+  }
 }
 function renderNavGrid(){
   const grid=$('#navGrid');grid.innerHTML='';
