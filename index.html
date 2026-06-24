@@ -17,7 +17,7 @@
 
     <!-- 统计信息栏 -->
     <div class="stats-bar">
-      <div class="stat-item">
+      <div class="stat-item stat-clickable" id="progressItem" title="点击查看题目导航">
         <span class="stat-label">📋 进度</span>
         <span class="stat-value" id="progress">0 / 0</span>
       </div>
@@ -28,6 +28,22 @@
       <div class="stat-item">
         <span class="stat-label">📝 错题数</span>
         <span class="stat-value" id="wrongCount">0</span>
+      </div>
+    </div>
+
+    <!-- 题目导航面板 -->
+    <div class="nav-panel" id="navPanel" style="display:none;">
+      <div class="nav-header">
+        <span>📑 题目导航</span>
+        <button class="nav-close" id="navClose">✕</button>
+      </div>
+      <div class="nav-grid" id="navGrid"></div>
+      <div class="nav-legend">
+        <span class="legend-item"><span class="dot correct"></span>正确</span>
+        <span class="legend-item"><span class="dot wrong"></span>错误</span>
+        <span class="legend-item"><span class="dot skipped"></span>跳过</span>
+        <span class="legend-item"><span class="dot pending"></span>未答</span>
+        <span class="legend-item"><span class="dot current"></span>当前</span>
       </div>
     </div>
 

@@ -231,6 +231,32 @@ function skipToWrong(){
   renderQuestion();
 }
 
+// ========== 题目导航面板 ==========
+function toggleNavPanel(){
+  const panel=$('#navPanel');
+  if(panel.style.display==='none'||!panel.style.display){panel.style.display='';renderNavGrid()}
+  else{panel.style.display='none'}
+}
+function renderNavGrid(){
+  const grid=$('#navGrid');grid.innerHTML='';
+  for(let i=0;i<STATE.currentList.length;i++){
+    const num=document.createElement('div');num.className='nav-num';num.textContent=i+1;
+    if(i===STATE.currentIndex)num.classList.add('current-dot');
+    else if(answerHistory[i]){
+      if(answerHistory[i].skipped)num.classList.add('skipped-dot');
+      else if(answerHistory[i].isCorrect)num.classList.add('correct-dot');
+      else num.classList.add('wrong-dot');
+    }else{num.classList.add('pending-dot')}
+    num.addEventListener('click',()=>jumpToQuestion(i));
+    grid.appendChild(num);
+  }
+}
+function jumpToQuestion(idx){
+  STATE.currentIndex=idx;$('#navPanel').style.display='none';renderQuestion();
+}
+$('#navClose').addEventListener('click',()=>{$('#navPanel').style.display='none'});
+$('#progressItem').addEventListener('click',toggleNavPanel);
+
 // ========== 事件 ==========
 $('#btnSubmit').addEventListener('click',submitAnswer);
 $('#btnNext').addEventListener('click',nextQuestion);

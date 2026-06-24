@@ -68,6 +68,30 @@ body {
   font-weight: 700;
   color: #2d3436;
 }
+.stat-clickable { cursor: pointer; }
+.stat-clickable:hover { background: #f0eeff; border-radius: 12px; }
+
+/* 题目导航面板 */
+.nav-panel { background: #fff; border-radius: 16px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: 700; color: #2d3436; }
+.nav-close { background: none; border: none; font-size: 18px; cursor: pointer; color: #999; padding: 2px 6px; }
+.nav-close:hover { color: #333; }
+.nav-grid { display: flex; flex-wrap: wrap; gap: 6px; max-height: 240px; overflow-y: auto; }
+.nav-num { width: 36px; height: 36px; border-radius: 8px; border: 1px solid #e0e0e0; background: #fafafa; display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; transition: all 0.15s; color: #666; }
+.nav-num:hover { transform: scale(1.1); box-shadow: 0 2px 8px rgba(108,92,231,0.2); }
+.nav-num.correct-dot { background: #e6fff8; border-color: #00b894; color: #00856a; font-weight: 600; }
+.nav-num.wrong-dot { background: #fff0f0; border-color: #ff6b6b; color: #cc3333; font-weight: 600; }
+.nav-num.skipped-dot { background: #fff3e0; border-color: #ff9800; color: #e65100; font-weight: 600; }
+.nav-num.pending-dot { background: #fafafa; border-color: #e0e0e0; color: #999; }
+.nav-num.current-dot { background: #6c5ce7; border-color: #6c5ce7; color: #fff; font-weight: 700; box-shadow: 0 2px 8px rgba(108,92,231,0.4); }
+.nav-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: #888; }
+.legend-item { display: flex; align-items: center; gap: 4px; }
+.legend-item .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.dot.correct { background: #00b894; }
+.dot.wrong { background: #ff6b6b; }
+.dot.skipped { background: #ff9800; }
+.dot.pending { background: #e0e0e0; }
+.dot.current { background: #6c5ce7; }
 
 /* --- 模式按钮 --- */
 .mode-bar {
