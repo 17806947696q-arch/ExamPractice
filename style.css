@@ -310,6 +310,18 @@ body {
   background: #e0e0e0;
 }
 
+.btn-skip {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffcc80;
+  font-size: 13px;
+  padding: 10px 18px;
+}
+.btn-skip:hover {
+  background: #ffe0b2;
+  color: #bf360c;
+}
+
 /* --- 完成面板 --- */
 .finish-panel {
   text-align: center;

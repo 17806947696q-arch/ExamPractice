@@ -185,6 +185,23 @@ $('#btnClearWrong').addEventListener('click',()=>{
   }
 });
 
+// 加入错题库（不会做，跳过并加入错题）
+function skipToWrong(){
+  if(STATE.answered)return;
+  const q=STATE.currentList[STATE.currentIndex];
+  addWrong(q.id); // 记录为错题
+  updateWrongCount();
+  // 直接跳到下一题
+  if(STATE.stats.done>=STATE.currentList.length-1){showFinish();return}
+  STATE.currentIndex++;
+  renderQuestion();
+}
+$('#btnSkip').addEventListener('click',()=>{
+  if(STATE.answered){nextQuestion();return}
+  if(!confirm('确定将这题加入错题库并跳过吗？'))return;
+  skipToWrong();
+});
+
 document.addEventListener('keydown',(e)=>{
   const q=STATE.currentList[STATE.currentIndex];
   if(e.key==='ArrowRight'){e.preventDefault();if(!STATE.answered)submitAnswer();else nextQuestion()}
@@ -195,6 +212,7 @@ document.addEventListener('keydown',(e)=>{
     if(e.key>='1'&&e.key<='4'&&q&&q.type==='single'){const btns=document.querySelectorAll('.option-btn');if(btns[parseInt(e.key)-1])selectOption(btns[parseInt(e.key)-1])}
   }
   if(e.key==='Enter'&&!STATE.answered&&q&&q.type==='fill'){submitAnswer()}
+  if(e.key==='s'&&!STATE.answered&&!e.ctrlKey&&!e.metaKey){e.preventDefault();skipToWrong()}
 });
 
 // ========== 初始化 ==========
