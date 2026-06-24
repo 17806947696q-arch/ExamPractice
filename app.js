@@ -189,10 +189,12 @@ $('#btnClearWrong').addEventListener('click',()=>{
 function skipToWrong(){
   if(STATE.answered)return;
   const q=STATE.currentList[STATE.currentIndex];
-  addWrong(q.id); // 记录为错题
+  addWrong(q.id);
+  STATE.stats.done++; // 计入已完成
   updateWrongCount();
-  // 直接跳到下一题
-  if(STATE.stats.done>=STATE.currentList.length-1){showFinish();return}
+  saveProgress();
+  // 判断是否是最后一题
+  if(STATE.stats.done>=STATE.currentList.length){showFinish();return}
   STATE.currentIndex++;
   renderQuestion();
 }
