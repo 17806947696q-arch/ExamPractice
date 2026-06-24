@@ -109,6 +109,20 @@ body {
   min-width: 80px;
 }
 
+/* 判断题按钮 */
+.judge-btn { text-align: center; font-size: 18px; padding: 16px; }
+
+/* 填空题输入 */
+.fill-input-wrapper { padding: 4px 0; }
+.fill-input {
+  width: 100%; padding: 14px 18px; border: 2px solid #e0e0e0;
+  border-radius: 12px; font-size: 16px; font-family: inherit;
+  outline: none; transition: border-color 0.2s; color: #333; background: #fafafa;
+}
+.fill-input:focus { border-color: #6c5ce7; background: #fff; }
+.fill-input.input-correct { border-color: #00b894; background: #e6fff8; color: #00856a; }
+.fill-input.input-wrong { border-color: #ff6b6b; background: #fff0f0; color: #cc3333; }
+
 .btn-clear:hover {
   background: #ff6b6b;
   color: #fff;
