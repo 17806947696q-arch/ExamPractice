@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📷 百度 OCR 录题工具</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#e8f0fe,#f3e8ff,#fce4ec);min-height:100vh;padding:20px;display:flex;justify-content:center}
+.container{max-width:800px;width:100%}
+h1{text-align:center;margin-bottom:8px;color:#1a1a2e}
+.subtitle{text-align:center;color:#888;margin-bottom:20px;font-size:14px}
+
+/* 设置区 */
+.section{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.section h2{font-size:18px;margin-bottom:12px;color:#2d3436}
+.row{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.row label{min-width:80px;color:#666;font-size:14px}
+.row input{flex:1;padding:10px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;outline:none}
+.row input:focus{border-color:#6c5ce7}
+.btn{padding:10px 24px;border:none;border-radius:12px;font-size:14px;cursor:pointer;font-weight:600;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:#fff}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-green{background:#00b894;color:#fff}
+.btn-green:hover{background:#009a7c}
+.btn-gray{background:#f0f0f0;color:#555}
+.btn-gray:hover{background:#e0e0e0}
+
+/* 图片粘贴区 */
+.dropzone{border:2px dashed #ddd;border-radius:16px;padding:40px;text-align:center;cursor:pointer;transition:all .2s;color:#999;margin-bottom:12px}
+.dropzone:hover,.dropzone.dragover{border-color:#6c5ce7;color:#6c5ce7;background:#f8f7ff}
+.dropzone img{max-width:100%;max-height:300px;border-radius:8px}
+
+/* 结果区 */
+.result-box{background:#f8f9ff;border-radius:12px;padding:16px;min-height:100px;max-height:400px;overflow-y:auto;white-space:pre-wrap;font-size:14px;line-height:1.8;margin-bottom:12px;border:1px solid #e8e8f0}
+.result-box.loading{color:#6c5ce7;text-align:center;padding:40px}
+
+/* 题目编辑 */
+.edit-group{margin-bottom:12px}
+.edit-group label{display:block;font-size:13px;color:#666;margin-bottom:4px;font-weight:600}
+.edit-group textarea,.edit-group input{padding:10px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;outline:none;resize:vertical}
+.edit-group textarea:focus,.edit-group input:focus{border-color:#6c5ce7}
+.edit-group textarea{width:100%;min-height:60px}
+.edit-group input{width:100%}
+
+.status{font-size:12px;color:#888;text-align:center;margin-top:8px}
+.token-ok{color:#00b894}
+.token-bad{color:#ff6b6b}
+.success{color:#00b894}
+.error{color:#ff6b6b}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📷 百度 OCR 录题工具</h1>
+  <p class="subtitle">截图 → 识别 → 校对 → 导出为题库 JSON</p>
+
+  <!-- API 设置 -->
+  <div class="section">
+    <h2>🔑 API 设置</h2>
+    <div class="row">
+      <label>API Key</label>
+      <input id="apiKey" placeholder="从百度智能云控制台获取">
+    </div>
+    <div class="row">
+      <label>Secret Key</label>
+      <input id="secretKey" type="password" placeholder="从百度智能云控制台获取">
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="btn btn-primary" onclick="initToken()">🔗 获取 Access Token</button>
+      <span class="status" id="tokenStatus">未获取</span>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:#aaa">
+      免费额度：1000次/天 ·
+      <a href="https://console.bce.baidu.com/ai/#/ai/ocr/overview/index" target="_blank">获取 API Key →</a>
+    </div>
+  </div>
+
+  <!-- 图片上传 -->
+  <div class="section">
+    <h2>📷 粘贴/上传题目截图</h2>
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+      <div id="dropText">📋 点击上传 或 直接 Ctrl+V 粘贴截图</div>
+      <img id="previewImg" style="display:none">
+    </div>
+    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this)">
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="doOCR()">🔍 识别文字</button>
+      <button class="btn btn-gray" onclick="clearImage()">清空</button>
+    </div>
+    <div class="result-box" id="ocrResult" style="margin-top:12px">等待识别...</div>
+  </div>
+
+  <!-- 题目编辑 -->
+  <div class="section" id="editSection" style="display:none">
+    <h2>✏️ 校对题目</h2>
+    <div class="edit-group">
+      <label>题目类型</label>
+      <select id="qType" style="padding:10px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px">
+        <option value="single">单选题</option>
+        <option value="judge">判断题</option>
+        <option value="multi">多选题</option>
+      </select>
+    </div>
+    <div class="edit-group">
+      <label>题干</label>
+      <textarea id="qStem" rows="3"></textarea>
+    </div>
+    <div id="optionsContainer"></div>
+    <div class="edit-group">
+      <label>答案</label>
+      <input id="qAnswer" placeholder="如：A 或 ABCD 或 √">
+    </div>
+    <div class="edit-group">
+      <label>解析</label>
+      <textarea id="qAnalysis" rows="2"></textarea>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-green" onclick="addToBank()">➕ 加入题库</button>
+      <button class="btn btn-primary" onclick="parseAndFill()">🤖 自动解析</button>
+      <button class="btn btn-gray" onclick="exportBank()">📥 导出题库</button>
+    </div>
+    <div class="status" id="bankStatus" style="margin-top:8px">已录入 0 题</div>
+  </div>
+
+  <!-- 题库预览 -->
+  <div class="section" id="bankPreview" style="display:none">
+    <h2>📦 本次录入题目 (<span id="bankCount">0</span>)</h2>
+    <div id="bankList" style="max-height:300px;overflow-y:auto"></div>
+    <div style="margin-top:10px;display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="exportBank()">📥 导出 JSON</button>
+      <button class="btn btn-gray" onclick="clearBank()">清空</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== 存储 ==========
+const LS = {
+  get(k) { try { return JSON.parse(localStorage.getItem('ocr_'+k)) } catch { return null } },
+  set(k,v) { localStorage.setItem('ocr_'+k, JSON.stringify(v)) },
+};
+
+let accessToken = LS.get('token') || '';
+let currentImageBase64 = '';
+let questionBank = LS.get('bank') || [];
+
+// 恢复状态
+document.getElementById('apiKey').value = LS.get('apiKey') || '';
+document.getElementById('secretKey').value = LS.get('secretKey') || '';
+if (accessToken) { document.getElementById('tokenStatus').textContent = '已获取 ✅'; document.getElementById('tokenStatus').className = 'status token-ok'; }
+if (questionBank.length > 0) { refreshBankUI(); }
+
+// ========== 获取 Token ==========
+async function initToken() {
+  const ak = document.getElementById('apiKey').value.trim();
+  const sk = document.getElementById('secretKey').value.trim();
+  if (!ak || !sk) { alert('请输入 API Key 和 Secret Key'); return; }
+  LS.set('apiKey', ak);
+  LS.set('secretKey', sk);
+  document.getElementById('tokenStatus').textContent = '获取中...';
+  try {
+    const resp = await fetch(`https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${ak}&client_secret=${sk}`, { method: 'POST' });
+    const data = await resp.json();
+    if (data.access_token) {
+      accessToken = data.access_token;
+      LS.set('token', accessToken);
+      document.getElementById('tokenStatus').textContent = '已获取 ✅ 有效期30天';
+      document.getElementById('tokenStatus').className = 'status token-ok';
+    } else {
+      throw new Error(data.error_description || '获取失败');
+    }
+  } catch(e) {
+    document.getElementById('tokenStatus').textContent = '❌ ' + e.message;
+    document.getElementById('tokenStatus').className = 'status token-bad';
+  }
+}
+
+// ========== 图片处理 ==========
+const dropzone = document.getElementById('dropzone');
+const dropText = document.getElementById('dropText');
+const previewImg = document.getElementById('previewImg');
+
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropzone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) processImage(file);
+});
+document.addEventListener('paste', e => {
+  const items = e.clipboardData?.items;
+  if (!items) return;
+  for (const item of items) {
+    if (item.type.startsWith('image/')) {
+      processImage(item.getAsFile());
+      break;
+    }
+  }
+});
+
+function handleFile(input) {
+  if (input.files[0]) processImage(input.files[0]);
+}
+
+function processImage(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    currentImageBase64 = reader.result.split(',')[1]; // remove data:... prefix
+    previewImg.src = reader.result;
+    previewImg.style.display = '';
+    dropText.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearImage() {
+  currentImageBase64 = '';
+  previewImg.style.display = 'none';
+  dropText.style.display = '';
+  document.getElementById('ocrResult').textContent = '等待识别...';
+}
+
+// ========== OCR ==========
+async function doOCR() {
+  if (!currentImageBase64) { alert('请先粘贴或上传图片'); return; }
+  if (!accessToken) { alert('请先获取 Access Token'); return; }
+
+  const resultBox = document.getElementById('ocrResult');
+  resultBox.textContent = '识别中...';
+  resultBox.className = 'result-box loading';
+
+  try {
+    const resp = await fetch(`https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=${accessToken}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `image=${encodeURIComponent(currentImageBase64)}`
+    });
+    const data = await resp.json();
+    if (data.error_code) throw new Error(data.error_msg);
+
+    const words = data.words_result.map(w => w.words);
+    resultBox.textContent = words.join('\n');
+    resultBox.className = 'result-box';
+
+    // 显示编辑区
+    document.getElementById('editSection').style.display = '';
+    // 尝试自动解析
+    parseAndFill();
+  } catch(e) {
+    resultBox.textContent = '❌ 识别失败: ' + e.message;
+    resultBox.className = 'result-box error';
+  }
+}
+
+// ========== 自动解析 ==========
+function parseAndFill() {
+  const text = document.getElementById('ocrResult').textContent.trim();
+  if (!text || text.startsWith('❌') || text.startsWith('识别中') || text.startsWith('等待')) return;
+
+  const lines = text.split('\n').filter(l => l.trim());
+  if (lines.length < 2) return;
+
+  // 判断题型
+  const lastLine = lines[lines.length-1];
+  const isJudge = /^[√×✓✗]$|^正确$|^错误$/.test(lastLine.trim()) ||
+                  /(正确|错误|√|×)/.test(lines.join(' ')) && lines.length <= 4;
+  const isMulti = lines.some(l => /^[A-E][.、)]/.test(l.trim())) && lines.length > 6;
+
+  const qType = document.getElementById('qType');
+  if (isJudge) qType.value = 'judge';
+  else if (isMulti) qType.value = 'multi';
+
+  // 解析题干
+  const stemLines = [];
+  const optionLines = [];
+  let inOptions = false;
+  for (const line of lines) {
+    if (/^[A-E][.、)]/i.test(line.trim())) {
+      inOptions = true;
+      optionLines.push(line.trim());
+    } else if (!inOptions) {
+      stemLines.push(line.trim());
+    }
+  }
+  document.getElementById('qStem').value = stemLines.join('').replace(/\s+/g, '');
+
+  // 生成选项输入框
+  const optCount = isJudge ? 2 : (optionLines.length >= 5 ? 5 : optionLines.length >= 4 ? 4 : 2);
+  const container = document.getElementById('optionsContainer');
+  const labels = 'ABCDE'.split('').slice(0, optCount);
+  container.innerHTML = labels.map((l, i) => `
+    <div class="edit-group">
+      <label>选项 ${l}</label>
+      <input id="opt${l}" value="${escapeHtml(optionLines[i] || '')}" placeholder="选项 ${l}">
+    </div>
+  `).join('');
+
+  // 清除答案
+  document.getElementById('qAnswer').value = '';
+  document.getElementById('bankStatus').textContent = '请确认题目信息后点击「加入题库」';
+}
+
+// ========== 题库管理 ==========
+function addToBank() {
+  const type = document.getElementById('qType').value;
+  const stem = document.getElementById('qStem').value.trim();
+  if (!stem) { alert('请输入题目内容'); return; }
+
+  const answers = document.getElementById('qAnswer').value.trim().toUpperCase();
+  if (!answers) { alert('请输入答案'); return; }
+
+  const q = {
+    id: questionBank.length + 1,
+    type: type === 'judge' ? 'judge' : 'single',
+    question: stem,
+    answer: answers,
+    analysis: document.getElementById('qAnalysis').value.trim() || '暂无解析'
+  };
+
+  // 收集选项
+  if (type !== 'judge') {
+    const opts = [];
+    const labels = 'ABCDE'.split('');
+    for (const l of labels) {
+      const el = document.getElementById('opt'+l);
+      if (el && el.value.trim()) opts.push(l + '. ' + el.value.trim());
+    }
+    if (opts.length > 0) q.options = opts;
+  }
+
+  questionBank.push(q);
+  LS.set('bank', questionBank);
+  refreshBankUI();
+  document.getElementById('bankStatus').textContent = '✅ 已录入 ' + questionBank.length + ' 题';
+}
+
+function refreshBankUI() {
+  const count = questionBank.length;
+  document.getElementById('bankCount').textContent = count;
+  document.getElementById('bankStatus').textContent = '已录入 ' + count + ' 题';
+  if (count > 0) {
+    document.getElementById('bankPreview').style.display = '';
+    const list = document.getElementById('bankList');
+    list.innerHTML = questionBank.map(q =>
+      `<div style="padding:8px;margin:4px 0;background:#f8f9ff;border-radius:8px;font-size:13px">
+        <b>#${q.id}</b> [${q.type==='judge'?'判断':'选择'}] ${q.question.substring(0,60)}... → ${q.answer}
+        <button style="float:right;background:none;border:none;color:#ff6b6b;cursor:pointer" onclick="removeQ(${q.id})">✕</button>
+      </div>`
+    ).join('');
+  }
+}
+
+function removeQ(id) {
+  questionBank = questionBank.filter(q => q.id !== id);
+  questionBank.forEach((q, i) => q.id = i + 1);
+  LS.set('bank', questionBank);
+  refreshBankUI();
+}
+
+function clearBank() {
+  if (!confirm('确定清空全部已录入题目？')) return;
+  questionBank = [];
+  LS.set('bank', []);
+  refreshBankUI();
+  document.getElementById('bankPreview').style.display = 'none';
+}
+
+function exportBank() {
+  if (questionBank.length === 0) { alert('没有可导出的题目'); return; }
+  const json = JSON.stringify(questionBank, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'questions_ocr_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  alert('已导出 ' + questionBank.length + ' 题');
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
