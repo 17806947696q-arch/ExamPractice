@@ -1,0 +1,4 @@
+node_modules/
+ocr_output/
+*.traineddata
+package-lock.json
