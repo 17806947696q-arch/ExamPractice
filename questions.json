@@ -1889,7 +1889,7 @@
   },
   {
     "id": 161,
-    "type": "single",
+    "type": "multi",
     "question": "下面哪些活动项是系统设计阶段的主要活动（ ）。",
     "answer": "ABD",
     "analysis": "系统设计包括总体设计、数据库设计、I/O设计。编码和实施计划不属于设计阶段。",
@@ -1903,7 +1903,7 @@
   },
   {
     "id": 162,
-    "type": "single",
+    "type": "multi",
     "question": "软件维护的类型包括（ ）。",
     "answer": "ABDE",
     "analysis": "四种维护类型：纠错性、适应性、完善性、预防性维护。",
@@ -1917,7 +1917,7 @@
   },
   {
     "id": 163,
-    "type": "single",
+    "type": "multi",
     "question": "结构化查询语言SQL的特点有（ ）。",
     "answer": "ABCE",
     "analysis": "SQL特点不包括数据独立性强(这是DBMS特性)。",
@@ -1931,7 +1931,7 @@
   },
   {
     "id": 164,
-    "type": "single",
+    "type": "multi",
     "question": "常用的信息系统规划方法有（ ）。",
     "answer": "CD",
     "analysis": "BSP和CSF是规划方法，其他是系统开发方法。",
@@ -1945,7 +1945,7 @@
   },
   {
     "id": 165,
-    "type": "single",
+    "type": "multi",
     "question": "常用的网络环境信息系统的运行模式有（ ）。",
     "answer": "AB",
     "analysis": "C/S和B/S是两种主要运行模式。",
@@ -1959,7 +1959,7 @@
   },
   {
     "id": 166,
-    "type": "single",
+    "type": "multi",
     "question": "UML将系统模型中，系统动态视图包含（ ）。",
     "answer": "CDE",
     "analysis": "动态视图：时序图、状态图、协作图。类图和对象图属于静态视图。",
@@ -1973,7 +1973,7 @@
   },
   {
     "id": 167,
-    "type": "single",
+    "type": "multi",
     "question": "信息系统开发方式有（ ）。",
     "answer": "ABCD",
     "analysis": "四种主要开发方式。",
@@ -1987,7 +1987,7 @@
   },
   {
     "id": 168,
-    "type": "single",
+    "type": "multi",
     "question": "软件测试阶段包括（ ）。",
     "answer": "ABCDE",
     "analysis": "软件测试五个阶段全部包括。",
@@ -2001,7 +2001,7 @@
   },
   {
     "id": 169,
-    "type": "single",
+    "type": "multi",
     "question": "用例之间的关系有（ ）。",
     "answer": "CD",
     "analysis": "用例之间主要有扩展(extend)和使用(include)两种关系。",
@@ -2015,7 +2015,7 @@
   },
   {
     "id": 170,
-    "type": "single",
+    "type": "multi",
     "question": "系统开发的主要方法有（ ）。",
     "answer": "ABCE",
     "analysis": "四大开发方法，BSP属于规划方法非开发方法。",

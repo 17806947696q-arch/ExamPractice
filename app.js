@@ -1,9 +1,10 @@
 /* ===== ExamPractice - 期末刷题助手 =====
- * 支持：单选题(single)、判断题(judge)、填空题(fill)
+ * 支持：单选题(single)、多选题(multi)、判断题(judge)、填空题(fill)
  * 进度保存 + 错题追踪 + 答题记录回溯
  */
 const STATE={questions:[],currentList:[],currentIndex:0,mode:'sequential',stats:{total:0,done:0,correct:0}};
 let selectedLetter=null;
+let selectedLetters=new Set(); // 多选题多选
 const PROGRESS_KEY='exampractice_progress';
 const WRONG_KEY='exampractice_wrong';
 const $=s=>document.querySelector(s);
@@ -80,7 +81,7 @@ function buildQuestionList(){
 }
 
 // ========== 类型标签 ==========
-function typeLabel(t){if(t==='single')return'单选题';if(t==='judge')return'判断题';if(t==='fill')return'填空题';return'题目';}
+function typeLabel(t){if(t==='single')return'单选题';if(t==='multi')return'多选题';if(t==='judge')return'判断题';if(t==='fill')return'填空题';return'题目';}
 function wrongLevel(count){if(count>=3)return{label:'🔴 高频错题',cls:'level-high'};if(count>=2)return{label:'🟡 易错题',cls:'level-mid'};return{label:'🟢 新错题',cls:'level-low'};}
 
 function isAnswered(){return answerHistory[STATE.currentIndex]!==null}
@@ -104,7 +105,13 @@ function renderQuestion(){
   $('#questionType').textContent=typeLabel(q.type);
 
   // 渲染选项
-  if(q.type==='judge'){
+  if(q.type==='multi'){
+    q.options.forEach((opt,idx)=>{
+      const btn=document.createElement('button');btn.className='option-btn';
+      btn.textContent=opt;btn.dataset.letter=String.fromCharCode(65+idx);
+      btn.addEventListener('click',()=>toggleMulti(btn));$('#optionsList').appendChild(btn);
+    });
+  }else if(q.type==='judge'){
     ['✅ 正确','❌ 错误'].forEach((label,idx)=>{
       const btn=document.createElement('button');btn.className='option-btn judge-btn';
       btn.textContent=label;btn.dataset.letter=idx===0?'√':'×';
@@ -124,7 +131,15 @@ function renderQuestion(){
   // 恢复已答题状态
   if(hist){
     selectedLetter=hist.selected||null;
-    if(q.type!=='fill'){
+    if(q.type==='multi'){
+      selectedLetters=new Set((hist.selected||'').split('').filter(Boolean));
+      document.querySelectorAll('.option-btn').forEach(b=>{
+        if(q.answer.includes(b.dataset.letter))b.classList.add('correct');
+        if(selectedLetters.has(b.dataset.letter)&&!hist.isCorrect)b.classList.add('wrong');
+        if(selectedLetters.has(b.dataset.letter))b.classList.add('selected');
+        b.classList.add('disabled');
+      });
+    }else if(q.type!=='fill'){
       // 高亮选中项
       document.querySelectorAll('.option-btn').forEach(b=>{
         if(b.dataset.letter===q.answer)b.classList.add('correct');
@@ -144,7 +159,7 @@ function renderQuestion(){
     $('#btnNext').disabled=(STATE.stats.done>=STATE.currentList.length);
     $('#btnPrev').disabled=(STATE.stats.done===0);
   }else{
-    selectedLetter=null;
+    selectedLetter=null;selectedLetters=new Set();
     $('#btnSubmit').disabled=false;$('#btnSubmit').textContent='✍️ 提交答案';
     $('#btnNext').disabled=true;
     $('#btnPrev').disabled=(STATE.currentIndex===0);
@@ -153,6 +168,14 @@ function renderQuestion(){
 }
 
 function selectOption(btn){if(isAnswered())return;document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedLetter=btn.dataset.letter;}
+
+// 多选题切换
+function toggleMulti(btn){
+  if(isAnswered())return;
+  const letter=btn.dataset.letter;
+  if(selectedLetters.has(letter)){selectedLetters.delete(letter);btn.classList.remove('selected');}
+  else{selectedLetters.add(letter);btn.classList.add('selected');}
+}
 
 // ========== 提交答案 ==========
 function submitAnswer(){
@@ -163,19 +186,29 @@ function submitAnswer(){
     if(!userAnswer){alert('请输入答案！');return}
     isCorrect=(userAnswer===q.answer);
     if(!isCorrect){const nu=userAnswer.replace(/，/g,',').replace(/\s+/g,'');const na=q.answer.replace(/，/g,',').replace(/\s+/g,'');isCorrect=(nu===na)}
+  }else if(q.type==='multi'){
+    if(selectedLetters.size===0){alert('请至少选择一个选项！');return}
+    userAnswer=[...selectedLetters].sort().join('');isCorrect=(userAnswer===q.answer);
   }else{
     if(!selectedLetter){alert(q.type==='judge'?'请选择正确或错误！':'请先选择一个选项！');return}
     userAnswer=selectedLetter;isCorrect=(selectedLetter===q.answer);
   }
 
   // 记录答题历史
-  answerHistory[STATE.currentIndex]={selected:selectedLetter,userAnswer,isCorrect,skipped:false};
+  answerHistory[STATE.currentIndex]={selected:q.type==='multi'?[...selectedLetters].join(''):selectedLetter,userAnswer,isCorrect,skipped:false};
   STATE.stats.done++;
   if(isCorrect){STATE.stats.correct++;reduceWrong(q.id)}
   else{addWrong(q.id)}
 
   // 高亮
   if(q.type==='fill'){$('#fillInput').disabled=true;$('#fillInput').classList.add(isCorrect?'input-correct':'input-wrong')}
+  else if(q.type==='multi'){
+    document.querySelectorAll('.option-btn').forEach(b=>{
+      b.classList.add('disabled');
+      if(q.answer.includes(b.dataset.letter))b.classList.add('correct');
+      if(selectedLetters.has(b.dataset.letter)&&!isCorrect)b.classList.add('wrong');
+    });
+  }
   else{document.querySelectorAll('.option-btn').forEach(b=>{b.classList.add('disabled');if(b.dataset.letter===q.answer)b.classList.add('correct');if(b.dataset.letter===selectedLetter&&!isCorrect)b.classList.add('wrong')})}
   $('#resultArea').textContent=isCorrect?'✅ 回答正确！':'❌ 回答错误！正确答案：'+q.answer;
   $('#resultArea').className='result-area '+(isCorrect?'correct-result':'wrong-result');
@@ -290,6 +323,7 @@ document.addEventListener('keydown',(e)=>{
   if(!isAnswered()){
     if(q&&q.type==='fill')return;
     if(e.key>='1'&&e.key<='2'&&q&&q.type==='judge'){const btns=document.querySelectorAll('.option-btn');if(btns[parseInt(e.key)-1])selectOption(btns[parseInt(e.key)-1])}
+    if(e.key>='1'&&e.key<='5'&&q&&q.type==='multi'){const btns=document.querySelectorAll('.option-btn');if(btns[parseInt(e.key)-1])toggleMulti(btns[parseInt(e.key)-1])}
     if(e.key>='1'&&e.key<='4'&&q&&q.type==='single'){const btns=document.querySelectorAll('.option-btn');if(btns[parseInt(e.key)-1])selectOption(btns[parseInt(e.key)-1])}
   }
   if(e.key==='Enter'&&!isAnswered()&&q&&q.type==='fill'){submitAnswer()}
