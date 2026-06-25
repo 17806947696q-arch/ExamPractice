@@ -1564,5 +1564,430 @@
     "question": "系统设计时应尽量减少各子系统之间的数据依赖性。",
     "answer": "√",
     "analysis": "减少数据依赖是高内聚低耦合设计的体现。"
+  },
+  {
+    "id": 127,
+    "type": "judge",
+    "question": "1.信息与物质、能源共同构成客观世界的三大要素",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 128,
+    "type": "judge",
+    "question": "2.软件测试的目的就是验证软件的正确性。",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 129,
+    "type": "judge",
+    "question": "3.信息系统开发过程中的需求分析阶段，用户的参与对于确保需求准确性的重要性高于技术实现的可行性",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 130,
+    "type": "judge",
+    "question": "4.在进行系统设计时，模块的独立性是衡量设计质量的一个重要指标。",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 131,
+    "type": "judge",
+    "question": "5.UML图中的类图可以用来表示类的属性和方法，但不适用于表示类之间的关系",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 132,
+    "type": "judge",
+    "question": "6.在软件生命周期中，系统规划和系统分析阶段的工作内容是相同的。",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 133,
+    "type": "judge",
+    "question": "7.逻辑路径覆盖的测试方法属于白盒测试。",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 134,
+    "type": "judge",
+    "question": "8.完善性维护就是发现并改正软件中隐含的错误。",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 135,
+    "type": "judge",
+    "question": "9.需求分析阶段要回答的是软件“做什么”的问题，设计阶段要回答的是“怎么做”的问题",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 136,
+    "type": "judge",
+    "question": "10.信息系统由人、硬件、软件和数据资源组成，目的是及时、正确地收集、加工、存储传递和提供信息，实现对组织中各项活动的管理、调节和控制。",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 137,
+    "type": "judge",
+    "question": "11.在模块结构图中，模块之间传递的信息可能是控制信息也可能是普通数据信息，如果传递的是控制信息，需要用符号来表示",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 138,
+    "type": "judge",
+    "question": "12.在面向对象方法中，将软件要解决的问题称为问题空间或问题域，所构建的软件系统称为解空间或实现域，软件开发的实质就是从“问题域”到实现域”的映射和转化过程",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 139,
+    "type": "judge",
+    "question": "13.系统中的类与类之间不是相互独立的，它们之间通过各种形式的联系构成一个有机的整体。其中，对象之间的\"“整体-部分”的关系也叫作继承关系。",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 140,
+    "type": "judge",
+    "question": "14.多态性是指在一般类中定义的属性和方法被特殊类继承之后，可以具有不同的数据类型或表现出不同的行为",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 141,
+    "type": "judge",
+    "question": "15.\"变换分析”和”事务分析”是用户需求分析的两种常用方法",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 142,
+    "type": "judge",
+    "question": "16.结构化设计的两个基本原则是程序模块应该设计成耦合松散和高度内聚。",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 143,
+    "type": "judge",
+    "question": "17.数据字典是对数据流图中的每一个成分（外部实体、数据流、数据处理、数据存储的详细说明，是数据流图的补充，它与数据流图共同对系统的逻辑模型进行描述",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 144,
+    "type": "judge",
+    "question": "18.文档是软件产品的一部分没有文档的软件就不称其为软件",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 145,
+    "type": "judge",
+    "question": "19.对于规模较大、结构比较复杂的系统，可以考虑采用原型法进行系统开发",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 正确",
+      "B. 错误"
+    ]
+  },
+  {
+    "id": 146,
+    "type": "single",
+    "question": "20.UML中，顺序图有类角色、生命线、激活期和关系组成。",
+    "answer": "C",
+    "analysis": "",
+    "options": [
+      "C. (失败:HTTP 404)",
+      "D. (失败:HTTP 404)"
+    ]
+  },
+  {
+    "id": 147,
+    "type": "single",
+    "question": "1.信息按照（)可以分为战略信息、战术信息和作业信息。",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 应用领域",
+      "B. 加工顺序",
+      "C. 管理的层次",
+      "D. 反映形式"
+    ]
+  },
+  {
+    "id": 148,
+    "type": "single",
+    "question": "5.信息系统建设的结构化方法中用户必须参与的原则是用户必须参与",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "A. 系统建设中各阶段工作",
+      "B. 系统分析工作",
+      "C. 系统设计工作",
+      "D. 系统实施工作"
+    ]
+  },
+  {
+    "id": 149,
+    "type": "single",
+    "question": "6.软件文档是信息系统（)的重要依据",
+    "answer": "C",
+    "analysis": "",
+    "options": [
+      "A. 可理解性",
+      "B. 可移植性"
+    ]
+  },
+  {
+    "id": 150,
+    "type": "single",
+    "question": "7.关于模块间调用的规则哪项是错误的",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 下层模块可直接与同级模 块进行通信",
+      "B. 下层模块只有接到上级模 块调用命令才能执行",
+      "C. 上下级模块之间可直接通 信",
+      "D. 模块调用顺序自上而下"
+    ]
+  },
+  {
+    "id": 151,
+    "type": "single",
+    "question": "8.功能结构设计的模块聚合中个模块只执行一个功能的是",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 逻辑聚合",
+      "B. 数据聚合",
+      "C. 功能聚合",
+      "D. 时间聚合"
+    ]
+  },
+  {
+    "id": 152,
+    "type": "single",
+    "question": "11.下面哪个UML视图描述个对象的生命周期",
+    "answer": "D",
+    "analysis": "",
+    "options": []
+  },
+  {
+    "id": 153,
+    "type": "single",
+    "question": "13.代码结构中设置检验位是为了保证",
+    "answer": "D",
+    "analysis": "",
+    "options": [
+      "A. 计算机内部运算不出错",
+      "B. 代码的合理性",
+      "C. 代码的稳定性",
+      "D. 代码输入的正确性"
+    ]
+  },
+  {
+    "id": 154,
+    "type": "single",
+    "question": "15.在原型法中，原型是进行开发的系统的",
+    "answer": "B",
+    "analysis": "",
+    "options": [
+      "A. 某一主要部分的详细设计方 案（物理模型",
+      "B. 反映用户需求的逻辑模型",
+      "C. 反映用户全部需求符合系统 开发规范的应用软件程序",
+      "D. 反映用户最基本需求的可 以运行的实验模型"
+    ]
+  },
+  {
+    "id": 155,
+    "type": "single",
+    "question": "16.在关系规范化过程中般来讲，满足)的关系即可满足信息处理的要求，所以，可以认为该范式是比较规范的关系模式",
+    "answer": "A",
+    "analysis": "",
+    "options": []
+  },
+  {
+    "id": 156,
+    "type": "single",
+    "question": "18.在一个课程注册系统中定义了子类CourseSchedule和父类Course,并在类CourseSchedule中定义了法add(c:Course)和方法remove(c:Course),则类CourseSchedule和类Course之间的关系是",
+    "answer": "C",
+    "analysis": "",
+    "options": [
+      "A. 泛化(generalization)关系",
+      "B. 组合(composition)关系",
+      "C. 依赖(dependency)关系",
+      "D. 包含(include)关系"
+    ]
+  },
+  {
+    "id": 157,
+    "type": "single",
+    "question": "19.信息系统开发的结构化方法是将系统开发分为若干阶段，而经验说明在各阶段中可能产生错误最大的隐患是来自",
+    "answer": "A",
+    "analysis": "",
+    "options": [
+      "D. 程序测试"
+    ]
+  },
+  {
+    "id": 158,
+    "type": "single",
+    "question": "21.用于对系统外部环境与其内部运作之间的交互进行建模的类是",
+    "answer": "B",
+    "analysis": "",
+    "options": []
+  },
+  {
+    "id": 159,
+    "type": "single",
+    "question": "23.下列不属于面向对象技术的基本特征的是(",
+    "answer": "C",
+    "analysis": "",
+    "options": [
+      "B. 模块独立性"
+    ]
+  },
+  {
+    "id": 160,
+    "type": "single",
+    "question": "24.关于面向对象方法的优点下列不正确的叙述是(",
+    "answer": "ABCD",
+    "analysis": "",
+    "options": [
+      "A. 与人类习惯的思维方法比较 致",
+      "B. 可重用性好",
+      "C. 以数据操作为中心",
+      "D. 可维护性好",
+      "E. (失败:HTTP 404)"
+    ]
+  },
+  {
+    "id": 161,
+    "type": "single",
+    "question": "25.（)是表达系统中类及其相互联系的图示，它是面向对象设计的核心，是建立状态图、协作图和其他图的基础",
+    "answer": "ABDE",
+    "analysis": "",
+    "options": [
+      "E. (失败:HTTP 404)"
+    ]
+  },
+  {
+    "id": 162,
+    "type": "single",
+    "question": "1.下面哪些活动项是系统设计阶段的主要活动",
+    "answer": "CD",
+    "analysis": "",
+    "options": [
+      "A. 系统总体设计",
+      "B. 数据库设计",
+      "C. 编码设计",
+      "D. 输入/输出设计",
+      "E. 编写系统实施计划"
+    ]
+  },
+  {
+    "id": 163,
+    "type": "single",
+    "question": "5.常用的网络环境信息系统的运行模式有",
+    "answer": "ABCDE",
+    "analysis": "",
+    "options": [
+      "D. 广域网模式",
+      "E. 局域网模式"
+    ]
+  },
+  {
+    "id": 164,
+    "type": "single",
+    "question": "6.UML将OOA&D要建立的系统模型划分为系统功能视图、系统静态视图和系统动态视图。其中，系统动态视图包含",
+    "answer": "CD",
+    "analysis": "",
+    "options": [
+      "C. 时序图（序列图"
+    ]
   }
 ]
