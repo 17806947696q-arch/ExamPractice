@@ -1,4 +1,5 @@
 node_modules/
 ocr_output/
+ocr_cache/
 *.traineddata
 package-lock.json
